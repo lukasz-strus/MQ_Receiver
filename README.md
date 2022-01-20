@@ -1,3 +1,3 @@
-# MQ_Receiver
+# MQ Receiver
 
 Rróżne podejścia do odbierania wiadomości w IBM MQ.
