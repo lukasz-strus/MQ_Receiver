@@ -6,14 +6,17 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
+
 namespace MQ_Receiver_priority
 {
+
     public static class DataService
     {
 
         public static List<TextObject> WriteObjects(MQQueue queue)
         {
             List<TextObject> list = new List<TextObject>();
+
             while (true)
             {
 
@@ -40,7 +43,7 @@ namespace MQ_Receiver_priority
                 MQGetMessageOptions queueGetMessageOptions = new MQGetMessageOptions();
                 MQPutMessageOptions queuePutMessageOptions = new MQPutMessageOptions();
                 queueGetMessageOptions.Options += MQC.MQGMO_WAIT;
-                queueGetMessageOptions.WaitInterval = 30000;
+                queueGetMessageOptions.WaitInterval = 300000;
                 queue.Get(queueMessage, queueGetMessageOptions);
                 string message = queueMessage.ReadString(queueMessage.MessageLength);
 

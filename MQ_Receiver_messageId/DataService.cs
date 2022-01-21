@@ -7,7 +7,7 @@ namespace MQ_Receiver_messageId
 {
     public static class DataService
     {
-        public static void WriteObjects(List<TextObject> list, MQQueue queue, byte id)
+        public static void WriteObjects(List<TextObject> list, MQQueue queue, byte messageId)
         {
 
             byte[] spaceId = new byte[24];
@@ -19,7 +19,8 @@ namespace MQ_Receiver_messageId
                 {
                     MQMessage queueMessage = new MQMessage { Format = MQC.MQFMT_STRING };
                     MQGetMessageOptions queueGetMessageOptions = new MQGetMessageOptions { MatchOptions = MQC.MQMO_MATCH_MSG_ID };
-                    spaceId[0] = (byte)(id + 32);
+
+                    spaceId[0] = (byte)(messageId + 32);
                     queueMessage.MessageId = spaceId;
                     queue.Get(queueMessage, queueGetMessageOptions);
 

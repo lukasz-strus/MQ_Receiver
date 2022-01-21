@@ -1,15 +1,21 @@
 ﻿/*
- 5 (Bąkowski, Strus) - odesłać elementy środkowe, 0, ostatni (ja występuję jako nadający)
+ 4 (Bąkowski, Strus) - odesłać o identyfikatorach parzystych, potem nieparzystych
  */
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using IBM.WMQ;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Collections;
 
-namespace MQ_Receiver_messageId
+namespace MQ_Receiver_correlationId
 {
-    public class MQ_Receiver_messageId
+    public class MQ_Receiver_correlationId
     {
+
         static void Main(string[] args)
         {
             string strReturn;
@@ -29,24 +35,25 @@ namespace MQ_Receiver_messageId
                 Console.WriteLine("Server is waiting for a connection.");
                 #endregion
 
-                MQQueue queueOutput = queueManager.AccessQueue("DEV.QUEUE.2LS", MQC.MQOO_OUTPUT + MQC.MQOO_FAIL_IF_QUIESCING);
                 MQQueue queueInput = queueManager.AccessQueue("DEV.QUEUE.2LS", MQC.MQOO_INPUT_AS_Q_DEF | MQC.MQOO_FAIL_IF_QUIESCING);
-
+                MQQueue queueOutput = queueManager.AccessQueue("DEV.QUEUE.2LS", MQC.MQOO_OUTPUT + MQC.MQOO_FAIL_IF_QUIESCING);
                 MQQueue queueOutput2 = queueManager.AccessQueue("DEV.QUEUE.2MB", MQC.MQOO_OUTPUT + MQC.MQOO_FAIL_IF_QUIESCING);
-                MQQueue queueInput2 = queueManager.AccessQueue("DEV.QUEUE.2MB", MQC.MQOO_INPUT_AS_Q_DEF + MQC.MQOO_FAIL_IF_QUIESCING);
+                MQQueue queueInput2 = queueManager.AccessQueue("DEV.QUEUE.2MB", MQC.MQOO_INPUT_AS_Q_DEF + MQC.MQOO_FAIL_IF_QUIESCING + MQC.MQOO_BROWSE);
 
 
                 List<TextObject> listObjects = new List<TextObject>();
+                byte correlationId = 1;
 
                 DataService.Receive(queueInput, queueOutput2);
-
-                for (int i = 1; i < 6; i++)
-                    DataService.WriteObjects(listObjects, queueInput2, (byte)i);
+                listObjects = DataService.WriteObjects(queueInput2, correlationId, out int numberOfMessages);
 
                 Console.Clear();
+
+                Console.WriteLine("Liczba komunikatów: {0}", numberOfMessages);
                 Console.WriteLine("Dane odebrane:");
 
                 listObjects.ForEach(i => Console.WriteLine("{0}. {1}", i.Index, i.Text));
+
 
             }
             catch (MQException MQexp)

@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MQ_Receiver_priority", "MQ_
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MQ_Receiver_messageId", "MQ_Receiver_messageId\MQ_Receiver_messageId.csproj", "{1549B2A4-6ACB-482E-80FF-B80DF0113FF4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MQ_Receiver_correlationId", "MQ_Receiver_correlationId\MQ_Receiver_correlationId.csproj", "{B0EF8603-A384-4CFB-9A8C-649A5CFACB07}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{1549B2A4-6ACB-482E-80FF-B80DF0113FF4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1549B2A4-6ACB-482E-80FF-B80DF0113FF4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1549B2A4-6ACB-482E-80FF-B80DF0113FF4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B0EF8603-A384-4CFB-9A8C-649A5CFACB07}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B0EF8603-A384-4CFB-9A8C-649A5CFACB07}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B0EF8603-A384-4CFB-9A8C-649A5CFACB07}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B0EF8603-A384-4CFB-9A8C-649A5CFACB07}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
