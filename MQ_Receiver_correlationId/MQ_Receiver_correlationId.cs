@@ -43,9 +43,12 @@ namespace MQ_Receiver_correlationId
                 List<TextObject> listObjects = new List<TextObject>();
                 byte correlationId = 1;
 
-                DataService.Receive(queueInput, queueOutput2);
-                listObjects = DataService.WriteObjects(queueInput2, correlationId, out int numberOfMessages);                              
+                DataService.ReceiveObjects(queueInput, queueOutput2);
+                listObjects = DataService.WriteObjects(queueInput2, correlationId, out int numberOfMessages);
 
+                
+
+                Console.Clear();
                 Console.WriteLine("Liczba komunikatów: {0}", numberOfMessages);
                 Console.WriteLine("Dane odebrane:");
                 listObjects.ForEach(i => Console.WriteLine("{0}. {1}", i.Index, i.Text));
