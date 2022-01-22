@@ -1,10 +1,7 @@
 ﻿using IBM.WMQ;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace MQ_Receiver_correlationId
 {
@@ -14,13 +11,23 @@ namespace MQ_Receiver_correlationId
         /// Metoda wczytująca obiekty z drugiej kolejki i wypisująca je do Consoli.
         /// </summary>
         /// <param name="queue">Kolejka pomocnicza</param>
-        /// <param name="correlationId">Numer CorrelationID <bold>(spaceId[0] = (byte)(correlationId + 32))</bold></param>
         /// <param name="numberOfMessages">Przesłana liczba elementów w kolejce</param>
         /// <returns></returns>
-        public static List<TextObject> WriteObjects(MQQueue queue, byte correlationId, out int numberOfMessages)
+        public static List<TextObject> WriteObjects(MQQueue queue, out int numberOfMessages)
         {
             List<TextObject> list = new List<TextObject>();
-            
+
+            byte correlationId;
+
+            #region CorrelationId
+            MQMessage correlationIdMessage = new MQMessage { Format = MQC.MQFMT_STRING };
+            MQGetMessageOptions queueGetcorrelationMessageOptions = new MQGetMessageOptions { MatchOptions = MQC.MQMO_MATCH_CORREL_ID };
+            correlationIdMessage.Priority = 9;
+            queue.Get(correlationIdMessage, queueGetcorrelationMessageOptions);
+            correlationId = Convert.ToByte(correlationIdMessage.ReadString(correlationIdMessage.MessageLength));
+            #endregion
+
+
             byte[] spaceId = new byte[24];
             for (int i = 0; i < spaceId.Length; ++i)
                 spaceId[i] = 32;
@@ -29,11 +36,15 @@ namespace MQ_Receiver_correlationId
 
             QueueBrowse(queue);
 
+            #region NumbersOfMessages
             MQMessage queueFirstMessage = new MQMessage { Format = MQC.MQFMT_STRING };
             MQGetMessageOptions queueGetFirstMessageOptions = new MQGetMessageOptions { MatchOptions = MQC.MQMO_MATCH_CORREL_ID };
             queueFirstMessage.CorrelationId = spaceId;
             queue.Get(queueFirstMessage, queueGetFirstMessageOptions);
             numberOfMessages = Convert.ToInt32(queueFirstMessage.ReadString(queueFirstMessage.MessageLength));
+            #endregion
+
+            #region Messages
 
             while (true)
             {
@@ -48,7 +59,10 @@ namespace MQ_Receiver_correlationId
 
                 list.Add(JsonSerializer.Deserialize<TextObject>(message));
             }
+            #endregion
+
             return list;
+
         }
 
         /// <summary>
@@ -60,6 +74,8 @@ namespace MQ_Receiver_correlationId
         {
             Console.WriteLine("BROWSE:\n");
             int numbersOfMessagesBrowse = 0;
+
+            #region BrowsFirstMessage
             MQMessage queueMessage = new MQMessage
             {
                 Format = MQC.MQFMT_STRING,
@@ -72,7 +88,9 @@ namespace MQ_Receiver_correlationId
             queue.Get(queueMessage, queueGetMessageOptions);
             int firstMessage = Convert.ToInt32(queueMessage.ReadString(queueMessage.MessageLength));
             Console.WriteLine("Liczba nadanych komunikatów: " + firstMessage + "\n");
+            #endregion
 
+            #region BrowseNextMesseges
             try
             {
                 while (true)
@@ -87,7 +105,7 @@ namespace MQ_Receiver_correlationId
                     queue.Get(queueNextMessage, queueGetNextMessageOptions);
                     string message = queueNextMessage.ReadString(queueNextMessage.MessageLength);
 
-                    if (message != "END" && message !="KONIEC")
+                    if (message != "END" && message != "KONIEC")
                     {
                         Console.WriteLine(message);
                         numbersOfMessagesBrowse++;
@@ -98,7 +116,9 @@ namespace MQ_Receiver_correlationId
             {
                 Console.WriteLine("Wszystkie dane zostały wczytane.\n");
             }
-            
+
+            #endregion
+
             Console.WriteLine("Liczba komunikatów w kolejce: " + numbersOfMessagesBrowse + "\n");
 
             if (numbersOfMessagesBrowse == firstMessage)
