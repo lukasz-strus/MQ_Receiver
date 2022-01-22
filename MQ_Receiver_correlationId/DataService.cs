@@ -52,20 +52,58 @@ namespace MQ_Receiver_correlationId
 
         private static void QueueBrowse(MQQueue queue)
         {
+
+            Console.WriteLine("BROWSE:");
+            int numbersOfMessagesBrowse = 0;
             MQMessage queueMessage = new MQMessage
             {
                 Format = MQC.MQFMT_STRING,
                 MessageId = MQC.MQMI_NONE,
                 CorrelationId = MQC.MQMI_NONE
             };
+
             MQGetMessageOptions queueGetMessageOptions = new MQGetMessageOptions();
             queueGetMessageOptions.Options += MQC.MQGMO_WAIT + MQC.MQGMO_BROWSE_FIRST;
             queue.Get(queueMessage, queueGetMessageOptions);
+            int firstMessage = Convert.ToInt32(queueMessage.ReadString(queueMessage.MessageLength));
+            Console.WriteLine("Liczba nadanych komunikatów: " + firstMessage);
 
-            Console.WriteLine(queueMessage.ReadString(queueMessage.MessageLength));
-            Console.WriteLine("Wcisnij klawisz aby kontynuować");
-            Console.ReadLine();
+            try
+            {
+                while (true)
+                {
+                    MQMessage queueNextMessage = new MQMessage
+                    {
+                        Format = MQC.MQFMT_STRING,
+                    };
 
+                    MQGetMessageOptions queueGetNextMessageOptions = new MQGetMessageOptions();
+                    queueGetNextMessageOptions.Options += MQC.MQGMO_WAIT + MQC.MQGMO_BROWSE_NEXT;
+                    queue.Get(queueNextMessage, queueGetNextMessageOptions);
+                    string message = queueNextMessage.ReadString(queueNextMessage.MessageLength);
+
+                    if (message != "END" && message !="KONIEC")
+                    {
+                        Console.WriteLine(message);
+                        numbersOfMessagesBrowse++;
+                    }
+                }
+            }
+
+            catch (MQException)
+            {
+                Console.WriteLine("Wszystkie dane zostały wczytane.");
+            }
+
+            Console.WriteLine("Liczba komunikatów w kolejce: " + numbersOfMessagesBrowse);
+
+            if (numbersOfMessagesBrowse == firstMessage)
+                Console.WriteLine("Liczba komunikatów wysłanych zgada się z liczbą komunikatów w kolejce.");
+            else
+                Console.WriteLine("Liczba komunikatów wysłanych NIE zgadza się z liczbą komunikatów w kolejce.");
+
+            Console.WriteLine("Wciśnij dowolny klawisz aby kontynuować...");
+            Console.ReadKey();
         }
 
         public static void Receive(MQQueue queue, MQQueue queue1)

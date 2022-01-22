@@ -40,20 +40,15 @@ namespace MQ_Receiver_correlationId
                 MQQueue queueOutput2 = queueManager.AccessQueue("DEV.QUEUE.2MB", MQC.MQOO_OUTPUT + MQC.MQOO_FAIL_IF_QUIESCING);
                 MQQueue queueInput2 = queueManager.AccessQueue("DEV.QUEUE.2MB", MQC.MQOO_INPUT_AS_Q_DEF + MQC.MQOO_FAIL_IF_QUIESCING + MQC.MQOO_BROWSE);
 
-
                 List<TextObject> listObjects = new List<TextObject>();
                 byte correlationId = 1;
 
                 DataService.Receive(queueInput, queueOutput2);
-                listObjects = DataService.WriteObjects(queueInput2, correlationId, out int numberOfMessages);
-
-                Console.Clear();
+                listObjects = DataService.WriteObjects(queueInput2, correlationId, out int numberOfMessages);                              
 
                 Console.WriteLine("Liczba komunikatów: {0}", numberOfMessages);
                 Console.WriteLine("Dane odebrane:");
-
                 listObjects.ForEach(i => Console.WriteLine("{0}. {1}", i.Index, i.Text));
-
 
             }
             catch (MQException MQexp)
