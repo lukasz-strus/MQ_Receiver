@@ -102,9 +102,9 @@ namespace MQ_Receiver_correlationId
             Console.WriteLine("Liczba komunikatów w kolejce: " + numbersOfMessagesBrowse + "\n");
 
             if (numbersOfMessagesBrowse == firstMessage)
-                Console.WriteLine("Liczba komunikatów wysłanych zgada się z liczbą komunikatów w kolejce.\n");
+                Console.WriteLine("Liczba komunikatów wysłanych ZGADZA się z liczbą komunikatów w kolejce.\n");
             else
-                Console.WriteLine("Liczba komunikatów wysłanych NIE zgadza się z liczbą komunikatów w kolejce.\n");
+                Console.WriteLine("Liczba komunikatów wysłanych NIE ZGADZA się z liczbą komunikatów w kolejce.\n");
 
             Console.WriteLine("Wciśnij dowolny klawisz aby kontynuować...");
             Console.ReadKey();
