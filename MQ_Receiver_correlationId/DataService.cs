@@ -105,7 +105,7 @@ namespace MQ_Receiver_correlationId
                     queue.Get(queueNextMessage, queueGetNextMessageOptions);
                     string message = queueNextMessage.ReadString(queueNextMessage.MessageLength);
 
-                    if (message != "END" && message != "KONIEC")
+                    if (message != "END")
                     {
                         Console.WriteLine(message);
                         numbersOfMessagesBrowse++;

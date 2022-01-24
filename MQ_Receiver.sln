@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.32002.261
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MQ_Receiver", "MQ_Receiver\MQ_Receiver.csproj", "{F1F665C7-A8F8-46AB-883D-5FFE6727E5BC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MQ_Receiver_list", "MQ_Receiver\MQ_Receiver_list.csproj", "{F1F665C7-A8F8-46AB-883D-5FFE6727E5BC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MQ_Receiver_priority", "MQ_Receiver_priority\MQ_Receiver_priority.csproj", "{8BBC86D5-BC00-4627-8A04-A702628B7C4C}"
 EndProject
