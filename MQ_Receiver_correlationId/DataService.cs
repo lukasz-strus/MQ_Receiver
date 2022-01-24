@@ -20,9 +20,12 @@ namespace MQ_Receiver_correlationId
             byte correlationId;
 
             #region CorrelationId
-            MQMessage correlationIdMessage = new MQMessage { Format = MQC.MQFMT_STRING };
+            MQMessage correlationIdMessage = new MQMessage
+            {
+                Format = MQC.MQFMT_STRING,
+                Priority = 9
+            };
             MQGetMessageOptions queueGetcorrelationMessageOptions = new MQGetMessageOptions { MatchOptions = MQC.MQMO_MATCH_CORREL_ID };
-            correlationIdMessage.Priority = 9;
             queue.Get(correlationIdMessage, queueGetcorrelationMessageOptions);
             correlationId = Convert.ToByte(correlationIdMessage.ReadString(correlationIdMessage.MessageLength));
             #endregion

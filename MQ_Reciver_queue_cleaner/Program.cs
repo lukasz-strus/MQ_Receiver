@@ -29,7 +29,7 @@ namespace lab2_2ms
                 while (true)
                 {
 
-                    MQQueue queue = queueManager.AccessQueue("DEV.QUEUE.2LS", MQC.MQOO_INPUT_AS_Q_DEF | MQC.MQOO_FAIL_IF_QUIESCING);
+                    MQQueue queue = queueManager.AccessQueue("DEV.QUEUE.2MB", MQC.MQOO_INPUT_AS_Q_DEF | MQC.MQOO_FAIL_IF_QUIESCING);
                     MQMessage queueMessage = new MQMessage();
                     queueMessage.Format = MQC.MQFMT_STRING;
                     MQGetMessageOptions queueGetMessageOptions = new MQGetMessageOptions();
