@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MQ_Receiver_correlationId",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MQ_Receiver_groupId", "MQ_Receiver_groupId\MQ_Receiver_groupId.csproj", "{22ABFCDC-DB1F-45B6-9BC9-4F3D288CEAD7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MQ_Reciver_queue_cleaner", "MQ_Reciver_queue_cleaner\MQ_Reciver_queue_cleaner.csproj", "{C7B5ADE8-FEA3-4DC1-BFD2-89AC1373FB54}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{22ABFCDC-DB1F-45B6-9BC9-4F3D288CEAD7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{22ABFCDC-DB1F-45B6-9BC9-4F3D288CEAD7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{22ABFCDC-DB1F-45B6-9BC9-4F3D288CEAD7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C7B5ADE8-FEA3-4DC1-BFD2-89AC1373FB54}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C7B5ADE8-FEA3-4DC1-BFD2-89AC1373FB54}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C7B5ADE8-FEA3-4DC1-BFD2-89AC1373FB54}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C7B5ADE8-FEA3-4DC1-BFD2-89AC1373FB54}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
