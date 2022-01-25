@@ -44,7 +44,11 @@ namespace MQ_Receiver_groupId
                     Format = MQC.MQFMT_STRING,
                     MessageFlags = MQC.MQGS_MSG_IN_GROUP
                 };
-                MQGetMessageOptions queueGetMessageOptions = new MQGetMessageOptions { MatchOptions = MQC.MQMO_MATCH_GROUP_ID };
+                MQGetMessageOptions queueGetMessageOptions = new MQGetMessageOptions
+                {
+                    MatchOptions = MQC.MQMO_MATCH_GROUP_ID
+                };
+                queueGetMessageOptions.Options |= MQC.MQGMO_ALL_MSGS_AVAILABLE;
                 queueMessage.GroupId = spaceId;
                 queue.Get(queueMessage, queueGetMessageOptions);
                 string message = queueMessage.ReadString(queueMessage.MessageLength);
@@ -67,23 +71,25 @@ namespace MQ_Receiver_groupId
         /// <param name="queue1">Kolejka do której będą wysyłane komunikaty</param>
         public static void ReceiveObjects(MQQueue queue, MQQueue queue1)
         {
-            while (true)
+            try
             {
-                MQMessage queueMessage = new MQMessage { Format = MQC.MQFMT_STRING };
-                MQGetMessageOptions queueGetMessageOptions = new MQGetMessageOptions();
+                MQMessage queueFirstMessage = new MQMessage { Format = MQC.MQFMT_STRING };
                 MQPutMessageOptions queuePutMessageOptions = new MQPutMessageOptions();
-                queueGetMessageOptions.Options += MQC.MQGMO_WAIT;
-                queueGetMessageOptions.WaitInterval = 300000;
-                queue.Get(queueMessage, queueGetMessageOptions);
-                string message = queueMessage.ReadString(queueMessage.MessageLength);
+                MQGetMessageOptions queueGetFirstMessageOptions = new MQGetMessageOptions();
+                queueGetFirstMessageOptions.Options += MQC.MQGMO_WAIT;
+                queueGetFirstMessageOptions.WaitInterval = MQC.MQWI_UNLIMITED;
+                queue.Get(queueFirstMessage, queueGetFirstMessageOptions);
+                queue1.Put(queueFirstMessage, queuePutMessageOptions);
 
-                if (message == "END")
+                while (true)
                 {
+                    MQMessage queueMessage = new MQMessage { Format = MQC.MQFMT_STRING };
+                    MQGetMessageOptions queueGetMessageOptions = new MQGetMessageOptions();
+                    queue.Get(queueMessage, queueGetMessageOptions);
                     queue1.Put(queueMessage, queuePutMessageOptions);
-                    break;
                 }
-                queue1.Put(queueMessage, queuePutMessageOptions);
             }
+            catch (MQException) { }
         }
 
     }
