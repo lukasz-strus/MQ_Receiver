@@ -40,17 +40,35 @@ namespace MQ_Receiver_Transakcje
                 MQQueue queueInput2 = queueManager.AccessQueue("DEV.QUEUE.2MB", MQC.MQOO_INPUT_AS_Q_DEF + MQC.MQOO_FAIL_IF_QUIESCING);
 
                 List<TextObject> listObjects = new List<TextObject>();
-                
+
 
                 DataService.ReceiveObjects(queueInput, queueOutput2);
-                listObjects = DataService.WriteObjects(queueInput2);
 
-                Console.Clear();
+                listObjects = DataService.WriteObjects(queueInput2);
                 Console.WriteLine("Dane odebrane:");
                 listObjects.ForEach(i => Console.WriteLine("{0}. {1}", i.Index, i.Text));
 
-                queueManager.Commit();
+                while (true)
+                {
+                    Console.WriteLine("Wprowadź \"C\" jeżeli chcesz zatwierdź transakcje.");
+                    Console.WriteLine("Wprowadź \"B\" jeżeli chcesz anulować transakcje (wiadomości pozostaną dalej w kolejce).");
+                    string choice = Console.ReadLine();
 
+                    if (choice.ToUpper() == "C")
+                    {
+                        queueManager.Commit();
+                        break;
+                    }
+                    else if (choice.ToUpper() == "B")
+                    {
+                        queueManager.Backout();
+                        listObjects = DataService.WriteObjects(queueInput2);
+                        Console.WriteLine("Dane odebrane:");
+                        listObjects.ForEach(i => Console.WriteLine("{0}. {1}", i.Index, i.Text));                   
+                    }
+                    else
+                        Console.WriteLine("Wybrałeś złą opcje, spróbuj wybrać jeszcze raz.");
+                }
             }
             catch (MQException MQexp)
             {
