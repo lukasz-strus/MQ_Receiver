@@ -1,5 +1,5 @@
 ﻿/*
-3 (Bąkowski, Strus) - odesłać o identyfikatorach nieparzystych, potem parzystych
+2 (Bąkowski, Strus) - odesłać elementy: 0, ostatni, pozostałe
  */
 using System;
 using System.Collections.Generic;
@@ -10,11 +10,11 @@ using IBM.WMQ;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Collections;
-
-namespace MQ_Receiver_groupId
+namespace MQ_Receiver_Transakcje
 {
-    class MQ_Receiver_groupId
+    class MQ_Receiver_Transakcje
     {
+
         static void Main(string[] args)
         {
             string strReturn;
@@ -40,6 +40,7 @@ namespace MQ_Receiver_groupId
                 MQQueue queueInput2 = queueManager.AccessQueue("DEV.QUEUE.2MB", MQC.MQOO_INPUT_AS_Q_DEF + MQC.MQOO_FAIL_IF_QUIESCING);
 
                 List<TextObject> listObjects = new List<TextObject>();
+                
 
                 DataService.ReceiveObjects(queueInput, queueOutput2);
                 listObjects = DataService.WriteObjects(queueInput2);
@@ -47,6 +48,8 @@ namespace MQ_Receiver_groupId
                 Console.Clear();
                 Console.WriteLine("Dane odebrane:");
                 listObjects.ForEach(i => Console.WriteLine("{0}. {1}", i.Index, i.Text));
+
+                queueManager.Commit();
 
             }
             catch (MQException MQexp)
