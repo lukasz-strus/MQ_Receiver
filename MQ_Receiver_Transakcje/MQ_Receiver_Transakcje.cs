@@ -57,6 +57,9 @@ namespace MQ_Receiver_Transakcje
                     if (choice.ToUpper() == "C")
                     {
                         queueManager.Commit();
+                        listObjects = DataService.WriteObjects(queueInput2);
+                        Console.WriteLine("Dane odebrane:");
+                        listObjects.ForEach(i => Console.WriteLine("{0}. {1}", i.Index, i.Text));
                         break;
                     }
                     else if (choice.ToUpper() == "B")
